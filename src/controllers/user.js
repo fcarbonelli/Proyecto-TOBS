@@ -41,10 +41,11 @@ const userController = {
         try {
             req.user.tokens = []
             await req.user.save();
-            res.redirect("/")       
-            // res.json();
+            //res.redirect("/")       
+            res.json({success: true, message: "Log out succesful"});
         } catch (e) {
-            res.status(500).json();
+            //res.status(500).json();
+            res.status(500).json({ success: false, code: 500, message: 'Error in Log Out' })
         }
     },
 }

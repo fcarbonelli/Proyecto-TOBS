@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include("partials/head.html") %>
     <title>Logout</title>
 </head>
 <body>
-    <form action="/logout" method="POST">
-        <button type="submit" class="btn btn-primary">Log Out</button>
-    </form>
+
+    <%- include("partials/navbar.html") %>
+    <br>
+    <div class="container">
+        <h2>Log Out</h2>
+        <br>
+        <form action="/logout" method="POST">
+            <button type="submit" class="btn btn-primary">Log Out</button>
+        </form>
+    </div>
+    
 </body>
 </html>
