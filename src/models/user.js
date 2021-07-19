@@ -18,6 +18,12 @@ const userSchema = new Schema({
         trim: true,
         required: [true, 'Password is required']
     },
+    email: {
+        type: String,
+        required: true,
+        unique: 'Email already in use ({VALUE})', 
+        lowercase: true,       
+    },
     tokens: [{
         token: {
             type: String,
@@ -29,12 +35,12 @@ const userSchema = new Schema({
 })
 
 //Metodo que valida las credenciales
-userSchema.statics.findByCredentials = async (username, password) => {
+userSchema.statics.findByCredentials = async (email, password) => {
     
-    const user =  await User.findOne({ username: username });
+    const user =  await User.findOne({ email: email });
     if(!user) {
         throw new Error("Wrong credentials");
-    }
+    }   
 
     const isMatch = await bcrypt.compare(password, user.password);
 
@@ -45,12 +51,14 @@ userSchema.statics.findByCredentials = async (username, password) => {
     return user;
 }
 
+
 userSchema.methods.generateToken = async function(){   
     const user = this;
-    const token = jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET, {expiresIn: "1h"})
+    const token = jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET)
     user.tokens = user.tokens.concat({ token: token });
     await user.save();
 
+    console.log(token)
     return token;
 }
 
