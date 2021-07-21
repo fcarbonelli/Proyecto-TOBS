@@ -1,53 +1,45 @@
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 const userController = {
 
     createUser: async (req, res) => {
-        const user = new User(req.body);
-        console.log(user)
-        if (!user) {
-            return res.status(400).json({ success: false, code: 400, message: 'Error creating User' })
-        }
-        try {
-            
-            await user.save();
-            const token = await user.generateToken();
+        const { email, password } = req.body;  
+        try {          
+            const user = await User.create({ email, password });
+            const token = createToken(user._id);
 
-            //status 201, CREATED
-            res.status(201).json({ success: true, message: "User created successfully", user, token });
-            //res.redirect("/login")
-        } catch (error) {
-            //error 400 
+            res.cookie('jwt', token, { httpOnly: true });
+            //res.status(201).json({ user, token });
+            res.redirect("/")
+        } catch (error) {          
             //res.status(400).json({ success: false, code: 400, message: error.message });
             res.redirect("/signup")
         }
     },
     login: async (req, res) => {        
+        const { email, password } = req.body;
         try {
-            const user = await User.findByCredentials(req.body.email, req.body.password);
-
-            const token = await user.generateToken();
-            console.log("LOGUEADO")
-
-            res.status(200).json({ user, token });
-            //res.redirect("/")       
-        } catch (e) {
-            //res.status(401).json(e);
-            res.redirect("/login")
+            const user = await User.findByCredentials(email, password);
+            const token = createToken(user._id);
+            res.cookie('jwt', token, { httpOnly: true });
+            //res.status(200).json({ user: user._id });
+            res.redirect("/")
+        } 
+        catch (err) {          
+            res.status(400).json(err);
         }
     },
     logout: async (req, res) => {
-        console.log("logout")
-        try {
-            req.user.tokens = []
-            await req.user.save();
-            //res.redirect("/")       
-            res.json({success: true, message: "Log out succesful"});
-        } catch (e) {
-            //res.status(500).json();
-            res.status(500).json({ success: false, code: 500, message: 'Error in Log Out' })
-        }
+        res.cookie('jwt', '', { maxAge: 1 });
+        res.redirect('/');
     },
 }
+
+const createToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+      expiresIn: 10000
+    });
+};
 
 module.exports = userController

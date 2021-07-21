@@ -1,7 +1,10 @@
 const express = require('express')
-const auth = require('../middlewares/auth');
+const { auth, checkUser } = require('../middlewares/auth');
 const userController = require('../controllers/user.js');
 const router = express.Router();
+
+// Views
+router.get("*", checkUser)
 
 router.get("/", (req, res) => {
     res.render("index.html", {title: "Home"})
@@ -15,7 +18,7 @@ router.get("/signup", (req, res) => {
     res.render("signup.html")
 })
 
-router.get("/logout", (req, res) => {
+router.get("/logout", auth,(req, res) => {
     res.render("logout.html")
 })
 
