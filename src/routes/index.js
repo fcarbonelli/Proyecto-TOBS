@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("*", checkUser)
 
 router.get("/", (req, res) => {
+    console.log(req.query.code)
     res.render("index.html", {title: "Home"})
 })
 
@@ -16,6 +17,10 @@ router.get("/login", authLogged, (req, res) => {
 
 router.get("/signup", authLogged, (req, res) => {
     res.render("signup.html")
+})
+
+router.get("/authorization", auth, (req, res) => {  
+    res.redirect("https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id="+process.env.APP_ID+"&redirect_uri="+process.env.REDIRECT_URI)
 })
 
 //Crear usuario

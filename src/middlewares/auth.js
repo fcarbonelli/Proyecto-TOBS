@@ -10,7 +10,7 @@ const auth = async (req, res, next) => {
           console.log(err.message);
           res.redirect('/login');
         } else {
-          console.log(decodedToken);
+          
           next();
         }
       });
@@ -19,7 +19,7 @@ const auth = async (req, res, next) => {
     }
 }
 
-//Si estas logueado
+//Si estas logueado te redirecciona a la home
 const authLogged = async (req, res, next) => { 
   const token = req.cookies.jwt;
 

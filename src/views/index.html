@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include("partials/head.html") %>
+<%- include("partials/head.html") %>
     <title>Proyecto TOBS </title>
 </head>
 <body>
@@ -15,8 +9,22 @@
         <header class="row">
             <div class="col-lg-12 text-center">
                 <img src="/images/tobsLogo.png" alt="Logo TOBS">
+                <br>
+                <hr>                    
             </div>
         </header>
+        <% if (user) { %>
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+                <h4><b>Authorize your MercadoLibre account:</b></h4>
+            </div>
+            <div class="col-3">                              
+                <a class="btn btn-warning" href="/authorization">Link My Account</a>      
+            </div>
+        </div>
+        <br>
+        <hr>
+        <% } %>
     </div>
 </body>
 </html>
