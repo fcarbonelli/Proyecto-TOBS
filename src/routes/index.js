@@ -1,22 +1,21 @@
 const express = require('express')
-const auth = require('../middlewares/auth');
+const { auth, checkUser, authLogged } = require('../middlewares/auth');
 const userController = require('../controllers/user.js');
 const router = express.Router();
+
+// Views
+router.get("*", checkUser)
 
 router.get("/", (req, res) => {
     res.render("index.html", {title: "Home"})
 })
 
-router.get("/login", (req, res) => {
+router.get("/login", authLogged, (req, res) => {
     res.render("login.html")
 })
 
-router.get("/signup", (req, res) => {
+router.get("/signup", authLogged, (req, res) => {
     res.render("signup.html")
-})
-
-router.get("/logout", (req, res) => {
-    res.render("logout.html")
 })
 
 //Crear usuario
@@ -26,6 +25,6 @@ router.post("/signup", userController.createUser)
 router.post("/login", userController.login)
 
 // Logout 
-router.post("/logout", auth, userController.logout);
+router.get("/logout", auth, userController.logout);
 
 module.exports = router;
