@@ -19,6 +19,24 @@ const auth = async (req, res, next) => {
     }
 }
 
+//Si estas logueado
+const authLogged = async (req, res, next) => { 
+  const token = req.cookies.jwt;
+
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+      if (err) {
+        console.log(err.message);
+        next();
+      } else {
+        res.redirect('/');       
+      }
+    });
+  } else {
+    next();
+  }
+}
+
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
@@ -38,4 +56,4 @@ const checkUser = (req, res, next) => {
   }
 };
 
-module.exports = { auth, checkUser };
+module.exports = { auth, checkUser, authLogged };
