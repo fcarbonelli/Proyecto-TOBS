@@ -14,7 +14,6 @@ async function dbConnect() {
     } catch (e) {
         console.log(e+" Error while connecting to the database");
     }
-    console.log(mongoose.connection.readyState);
 }
 
 module.exports = dbConnect;
