@@ -63,7 +63,7 @@ const meliController = {
         fs.createReadStream(path.resolve(__dirname, "../uploads", 'tobsfile.csv'))
         .pipe(csv.parse( {headers: true} ))
         .on("error", error => console.error(error))
-        .on("data", data => publishItem2(data, req.cookies.token))
+        .on("data", data => publishItem(data, req.cookies.token))
        
         fs.unlinkSync(path.resolve(__dirname, "../uploads", 'tobsfile.csv'));
         
@@ -73,45 +73,6 @@ const meliController = {
 }
 
 const publishItem = async (data, token) => {  
-
-    let config = {
-        headers: {
-            'Authorization': 'Bearer '+ token
-        }
-    }
-
-    let melidata = {
-        "title":data.name,
-        "category_id":"MLA6049",
-        "price":data.price,
-        "currency_id":data.currency,
-        "available_quantity":data.qty,
-        "buying_mode":"buy_it_now",
-        "condition":data.condition,
-        "listing_type_id":"gold_special",
-        "pictures":[
-            {
-                "source":data.image
-            }
-        ],
-        "attributes":[
-            {
-                "id":"EAN",
-                "value_name":data.EAN
-            }
-        ]}
-
-        let URL = "https://api.mercadolibre.com/items"
-
-        try {
-            await axios.post(URL, melidata, config)
-            //console.log(melidata)
-        } catch (error) {
-            console.log(error)
-        }
-};
-
-const publishItem2 = async (data, token) => {  
 
     axios.post("https://api.mercadolibre.com/items", {
         "title":data.name,
@@ -146,9 +107,9 @@ const publishItem2 = async (data, token) => {
             'Authorization': 'Bearer '+ token
         }
     })
-    .then(response => { console.log(response)})
+    .then(response => { console.log(response.data.permalink)})
     .catch(error => {
-        console.log(error.response)
+        console.log(error.response.data.cause[0].message)
     })
 
     
