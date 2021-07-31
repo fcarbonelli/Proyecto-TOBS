@@ -32,6 +32,9 @@ const userController = {
     },
     logout: async (req, res) => {
         res.cookie('jwt', '', { maxAge: 1 });
+        res.cookie('meli', '', { maxAge: 1 });
+        res.cookie('token', '', { maxAge: 1 });
+
         res.redirect('/');
     },
 }

@@ -10,8 +10,11 @@
                 <% if (user) { %>
                 <li> Bienvenido/a, <%= user.email %> </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout">Log Out</a>  
+                    <a class="nav-link btn" href="/authorization">Upload Form</a>  
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log Out</a>  
+                </li>             
                 <% } else { %>
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Log In</a>
