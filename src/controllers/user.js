@@ -13,8 +13,8 @@ const userController = {
             //res.status(201).json({ user, token });
             res.redirect("/")
         } catch (error) {          
-            //res.status(400).json({ success: false, code: 400, message: error.message });
-            res.redirect("/signup")
+            res.status(400).json({ success: false, code: 400, message: error.message });
+            //res.redirect("/signup")
         }
     },
     login: async (req, res) => {        
@@ -23,6 +23,7 @@ const userController = {
             const user = await User.findByCredentials(email, password);
             const token = createToken(user._id);
             res.cookie('jwt', token, { httpOnly: true });
+            res.cookie('email', email, { httpOnly: true });
             //res.status(200).json({ user: user._id });
             res.redirect("/")
         } 
@@ -37,6 +38,11 @@ const userController = {
 
         res.redirect('/');
     },
+    getProducts: async (req, res) => {
+        let products = await User.getProducts(req.cookies.email)
+        
+        res.render("products.html", { products: products })
+    }
 }
 
 const createToken = (id) => {

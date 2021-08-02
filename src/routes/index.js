@@ -53,4 +53,6 @@ router.post("/upload", meliController.generateTokenAxios)
 
 router.post("/files", upload.single("csv"), meliController.postProducts)
 
+router.get("/products", auth, userController.getProducts)
+
 module.exports = router;

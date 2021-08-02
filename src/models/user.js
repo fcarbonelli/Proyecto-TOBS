@@ -18,7 +18,10 @@ const userSchema = new Schema({
         minlength: [6, "Minimum password length is 6 characters"],
         trim: true,
         required: [true, 'Password is required']
-    },      
+    },
+    products: [{
+        type: String
+    }]      
 }, {
     timestamps: true 
 })
@@ -37,6 +40,26 @@ userSchema.statics.findByCredentials = async (email, password) => {
     }
 
     return user;
+}
+
+userSchema.statics.saveProducts = async (product, email) => {
+    
+    const user =  await User.findOne({ email: email });
+    
+    //user.products = user.product.concat({product: product})
+    user.products.push(product)
+    await user.save()
+    return user
+}
+
+userSchema.statics.getProducts = async (email) => {
+
+    const user =  await User.findOne({ email: email });
+    
+    //let products = JSON.stringify(user.products)
+    let products = user.products
+    
+    return products
 }
 
 userSchema.pre('save', async function(next) {

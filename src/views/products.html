@@ -1,0 +1,25 @@
+<%- include("partials/head.html") %>
+<title>Login</title>
+</head>
+<body>
+
+<%- include("partials/navbar.html") %>
+
+<br>
+<div class="container">
+
+    <h2>Published Productos in MercadoLibre: </h2>   
+    <hr>
+    <br>
+
+    <ul>
+        <% for(var i = 0; i < products.length; i++) { %>
+            <li><%= products[i] %></li>
+          <% } %>
+    </ul>
+    
+    
+    
+</div>
+</body>
+</html>

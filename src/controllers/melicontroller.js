@@ -2,6 +2,7 @@ const axios = require('axios');
 const fs = require("fs")
 const csv = require("fast-csv")
 const path = require('path');
+const User = require('../models/user');
 
 const meliController = {
 
@@ -63,7 +64,7 @@ const meliController = {
         fs.createReadStream(path.resolve(__dirname, "../uploads", 'tobsfile.csv'))
         .pipe(csv.parse( {headers: true} ))
         .on("error", error => console.error(error))
-        .on("data", data => publishItem(data, req.cookies.token))
+        .on("data", data => publishItem(data, req.cookies.token, req.cookies.email))
        
         fs.unlinkSync(path.resolve(__dirname, "../uploads", 'tobsfile.csv'));
         
@@ -72,7 +73,7 @@ const meliController = {
     
 }
 
-const publishItem = async (data, token) => {  
+const publishItem = async (data, token, email) => {  
 
     axios.post("https://api.mercadolibre.com/items", {
         "title":data.name,
@@ -107,9 +108,13 @@ const publishItem = async (data, token) => {
             'Authorization': 'Bearer '+ token
         }
     })
-    .then(response => { console.log(response.data.permalink)})
+    .then(response => {
+         console.log(response.data.permalink)
+         User.saveProducts(JSON.stringify(response.data.permalink), email)
+        })
     .catch(error => {
         console.log(error.response.data.cause[0].message)
+        User.saveProducts(JSON.stringify(error.response.data.cause[0].message), email)
     })
 
     
