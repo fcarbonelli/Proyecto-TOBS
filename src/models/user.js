@@ -52,6 +52,16 @@ userSchema.statics.saveProducts = async (product, email) => {
     return user
 }
 
+userSchema.statics.getProducts = async (email) => {
+
+    const user =  await User.findOne({ email: email });
+    
+    //let products = JSON.stringify(user.products)
+    let products = user.products
+    
+    return products
+}
+
 userSchema.pre('save', async function(next) {
 
     const user = this;

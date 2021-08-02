@@ -38,6 +38,11 @@ const userController = {
 
         res.redirect('/');
     },
+    getProducts: async (req, res) => {
+        let products = await User.getProducts(req.cookies.email)
+        
+        res.render("products.html", { products: products })
+    }
 }
 
 const createToken = (id) => {
