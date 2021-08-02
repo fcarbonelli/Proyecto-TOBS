@@ -55,4 +55,10 @@ router.post("/files", upload.single("csv"), meliController.postProducts)
 
 router.get("/products", auth, userController.getProducts)
 
+router.post("/email", userController.sendEmail)
+
+router.get("/email", authLogged, (req, res) => {
+    res.render("email.html")
+})
+
 module.exports = router;
