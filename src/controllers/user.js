@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer")
 
 const userController = {
 
@@ -42,6 +43,32 @@ const userController = {
         let products = await User.getProducts(req.cookies.email)
         
         res.render("products.html", { products: products })
+    },
+    sendEmail: async (req, res) => {
+        var transporter = nodemailer.createTransport({
+            host: "smtp.ethereal.email",
+            port: 587,
+            secure: false, 
+            auth: {
+                user: "dewitt.koelpin61@ethereal.email",
+                pass: "jhQA8sbutQTpPV1mAM",
+            },
+        })
+
+        var mailOptions = {
+            from: "Remitente",
+            to: req.body.email,
+            subject: req.body.subject,
+            text: req.body.text
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(200).json(req.body)
+            }
+        })
     }
 }
 
