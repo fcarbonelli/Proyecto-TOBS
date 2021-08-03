@@ -46,7 +46,6 @@ userSchema.statics.saveProducts = async (product, email) => {
     
     const user =  await User.findOne({ email: email });
     
-    //user.products = user.product.concat({product: product})
     user.products.push(product)
     await user.save()
     return user
@@ -57,9 +56,9 @@ userSchema.statics.getProducts = async (email) => {
     const user =  await User.findOne({ email: email });
     
     //let products = JSON.stringify(user.products)
-    let products = user.products
+    let productos = user.products
     
-    return products
+    return productos
 }
 
 userSchema.pre('save', async function(next) {

@@ -11,6 +11,8 @@ const userController = {
             const token = createToken(user._id);
 
             res.cookie('jwt', token, { httpOnly: true });
+            res.cookie('email', email, { httpOnly: true });
+
             //res.status(201).json({ user, token });
             res.redirect("/")
         } catch (error) {          
@@ -25,7 +27,7 @@ const userController = {
             const token = createToken(user._id);
             res.cookie('jwt', token, { httpOnly: true });
             res.cookie('email', email, { httpOnly: true });
-            //res.status(200).json({ user: user._id });
+      
             res.redirect("/")
         } 
         catch (err) {          

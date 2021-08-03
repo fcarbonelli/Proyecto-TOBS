@@ -68,7 +68,7 @@ const meliController = {
        
         fs.unlinkSync(path.resolve(__dirname, "../uploads", 'tobsfile.csv'));
         
-        res.redirect("/upload")
+        res.redirect("/products")
     }
     
 }
